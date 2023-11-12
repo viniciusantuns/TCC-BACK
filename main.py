@@ -90,14 +90,29 @@ def login():
     operador = cur.fetchone()
 
     if operador is None:
-        return make_response(jsonify({'erro': 'matricula/senha incorreto'}))
+        return make_response(jsonify({'erro': 'matricula/senha incorreto'}), 404)
 
     cur.close()
     conn.close()
     return make_response(jsonify(operador), 200)
 
+@app.route("/ordem_servico/<id_maquina>")
+def ordem_servico_by_maquina(id_maquina):
 
+    conn = get_db_connection('postgres')
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
+    sql = "select * from ordem_servico as os where os.id_maquina_pk = %s and os.status='A'"
+
+    cur.execute(sql, (int(id_maquina)),)
+    maquina = cur.fetchone(sql)
+
+    if maquina is None:
+        return make_response(jsonify({'erro': 'maquina não encontrada'}), 404)
+
+    cur.close()
+    conn.close()
+    return make_response(jsonify(maquina), 200)
 
 app.debug = True
 if __name__ == '__main__':
