@@ -1,0 +1,54 @@
+# Arquivos temporários
+*.swp
+*~
+
+# Byte-compiled / compilado
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual
+venv/
+env/
+env.bak/
+env1/
+venv1/
+venv2/
+.vscode/
+.idea/
+
+# Arquivos de log
+*.log
+log.txt
+
+# Arquivos de configuração
+*.ini
+*.cfg
+*.conf
+.env
+
+# Diretórios específicos
+node_modules/
+bower_components/
+
+# Arquivos de saída de build
+dist/
+build/
+*.egg-info/
+*.egg/
+*.exe
+*.msi
+*.dll
+*.out
+*.class
+
+# Arquivos específicos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Cache e diretórios temporários
+.cache/
+.tmp/
+.temp/
+temp/
