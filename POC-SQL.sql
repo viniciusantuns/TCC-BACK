@@ -7,17 +7,17 @@ CREATE TABLE operador (
 );
 
 
-create table maquina(
+CREATE TABLE maquina(
 	id_maquina SERIAL primary KEY,
 	nome VARCHAR(30), 
 	fabricante VARCHAR(50), 
 	modelo VARCHAR(20),
-	capacidade_operadcional INT,
-	data_aquisicao TIMESTAMP,
+	capacidade_operacional INT,
+	data_aquisicao TIMESTAMP
 );
 
 
-create table ordem_servico(
+CREATE TABLE ordem_servico(
 	id_ordem_servico SERIAL PRIMARY KEY,	
 	data_inicio TIMESTAMP,
 	data_fim TIMESTAMP,
@@ -25,8 +25,8 @@ create table ordem_servico(
 	velocidade_minima double precision,
 	velocidade_maxima double precision,
 	rpm_minimo double precision,
-	rpm_maximo double precision
-	id_maquina_pk references maquina(id_maquina)
+	rpm_maximo double precision,
+	id_maquina_pk INT REFERENCES maquina(id_maquina)
 );
 
 create table ordem_servico_operador(
@@ -42,7 +42,7 @@ VALUES
   ('Operador 3', 'operador3@email.com', 'mat03', '7890');
 
  
- INSERT INTO maquina (nome, fabricante, modelo, capacidade_operacional, data_aquisicao)
+INSERT INTO maquina (nome, fabricante, modelo, capacidade_operacional, data_aquisicao)
 VALUES ('Colhedora 3000', 'New banana', 'Colhedora', 100, '2023-11-11 08:00:00');
 
 
@@ -57,18 +57,7 @@ VALUES
   (1, 1),
   (1, 2);
 
- 
-create table maquina(
-	id_maquina SERIAL primary KEY,
-	nome VARCHAR(30), 
-	fabricante VARCHAR(50), 
-	modelo VARCHAR(20),
-	capacidade_operacional INT,
-	data_aquisicao TIMESTAMP
-);
 
-
- 
 select STRING_AGG(op.nome, ', ') as operadores, os.* from operador as op 
 inner join ordem_servico_operador osp on osp.id_operador_pk = op.id_operador
 inner join ordem_servico os on osp.id_ordem_pk = os.id_ordem_servico

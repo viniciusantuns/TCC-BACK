@@ -3,19 +3,19 @@ from pymongo import MongoClient
 import psycopg2
 from psycopg2 import extras
 from bson import json_util
-
+import socket
 
 app = Flask(__name__)
 
 
 def get_db_connection(database):
     databases = {
-        "postgres": psycopg2.connect(host='localhost',
+        "postgres": psycopg2.connect(host='postgresdb',
                             database='postgres',
-                            port='5400',
+                            port='5432',
                             user='postgres',
                             password='postgres'),
-        "mongo": MongoClient('mongodb://localhost:27017/')
+        "mongo": MongoClient('mongodb://mongodb:27017/')
     }
 
     return databases.get(database, None)
@@ -24,6 +24,7 @@ def get_db_connection(database):
 @app.route('/eventos', methods=['POST'])
 def eventos():
     if request.is_json:
+        print("recebi coisa boa")
         dados_json = request.get_json()
 
         client = get_db_connection('mongo')
@@ -37,7 +38,7 @@ def eventos():
             return "deu merda"
         return jsonify(resposta)
     else:
-
+        print("recebi merda")
         return jsonify({'erro': 'A solicitação não contém dados JSON'}), 400
 
 
@@ -56,7 +57,7 @@ def eventos_get_by_ordem(id_ordem):
     if not eventos:
         return make_response(jsonify({"erro": "no content"}), 204)
 
-    return make_response(json_util.dumps(eventos), 200)
+    return make_response(json_util.dumps({"eventos": eventos}), 200)
 
 
 @app.route("/eventos", methods=['GET'])
@@ -71,7 +72,7 @@ def eventos_get():
     if not eventos:
         return make_response(jsonify({"erro": "no content"}), 204)
 
-    return make_response(json_util.dumps(eventos), 200)
+    return make_response(json_util.dumps({"eventos": eventos}), 200)
 
 
 @app.route('/operador/login', methods=['POST'])
@@ -116,4 +117,7 @@ def ordem_servico_by_maquina(id_maquina):
 
 app.debug = True
 if __name__ == '__main__':
-    app.run(debug=True)
+    host = socket.gethostbyname(socket.gethostname())
+    print(host)
+    port = "5000"
+    app.run(host=str(host), port=port, debug=True)
