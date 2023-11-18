@@ -17,7 +17,7 @@ venv1/
 venv2/
 .vscode/
 .idea/
-
+.idea
 # Arquivos de log
 *.log
 log.txt
